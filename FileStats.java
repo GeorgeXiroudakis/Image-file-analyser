@@ -18,6 +18,19 @@ public class FileStats {
 	static int NumOfFil = 0;
 	static String text = "<html><body>\n";
 	static List<File> images = new ArrayList<>();
+	
+	public static void main(String[] args) {
+		 String path = utils.selectAFolderDialog(JFileChooser.DIRECTORIES_ONLY);
+		 File folder = new File(path);
+		 System.out.println("\nfollowing files detected:");
+		 listFilesForFolder(folder);
+		 System.out.println("-----------------------");
+		 printNumOfDirAndFil(folder);
+		 System.out.println("-----------------------");
+		 makeHdml(folder);
+		 System.out.println("-----------------------");
+		 makeGui(folder);
+	 }
  	
 	public static void listFilesForFolder(File folder) {
 		 for (File fileEntry : folder.listFiles()) {
@@ -38,11 +51,8 @@ public class FileStats {
 				 NumOfFil += 1;
 			}
 		 }
-		//check if we are at the last iteration
-		if( folder.listFiles().length == NumOfDir ){
-			System.out.println("There are " + NumOfDir + " Directories.");
-			System.out.println("There are " + NumOfFil + " Files.");		
-		}
+		System.out.println("There are " + NumOfDir + " Directories.");
+		System.out.println("There are " + NumOfFil + " Files.");		
 	}
 	
 	public static void makeHdml(File folder){
@@ -59,17 +69,14 @@ public class FileStats {
 				}
 			}
 		}
-		//check if we are at the last iteration
-		if( folder.listFiles().length == NumOfDir ) {
-			try {
-				BufferedWriter HtmlFile = new BufferedWriter(new FileWriter("images.htm"));
-				HtmlFile.write(text);
-				HtmlFile.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			System.out.println("Folder made.");
+		try {
+			BufferedWriter HtmlFile = new BufferedWriter(new FileWriter("images.htm"));
+			HtmlFile.write(text);
+			HtmlFile.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+		System.out.println("HTML made.");
 	}
 	
 	
@@ -81,23 +88,8 @@ public class FileStats {
 				 images.add(fileEntry);
 			}
 		 }
-		if( folder.listFiles().length == NumOfDir ) {
-			ImagesGui G = new ImagesGui(images);
-			System.out.println("Gui created.");
-		}
+		ImagesGui G = new ImagesGui(images);
+		System.out.println("Gui created.");
 	}
-
-	
-	 public static void main(String[] args) {
-		 String path = utils.selectAFolderDialog(JFileChooser.DIRECTORIES_ONLY);
-		 File folder = new File(path);
-		 listFilesForFolder(folder);
-		 System.out.println("-----------------------");
-		 printNumOfDirAndFil(folder);
-		 System.out.println("-----------------------");
-		 makeHdml(folder);
-		 System.out.println("-----------------------");
-		 makeGui(folder);
-	 }
 
 }
